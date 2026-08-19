@@ -152,6 +152,17 @@ char getc() {
 	return (char)(uint8)trigger_syscall(GETC, 0, 0);
 }
 
+int thread_addChild (thread_t child) {
+	uint64 args[1];
+	args[0] = (uint64)child;
+	return (int)(long)trigger_syscall(THREAD_ADD_CHILD, args, 1);
+}
+
+int thread_joinAll () {
+	uint64 args[1];
+	return (int)(long)trigger_syscall(THREAD_JOIN_ALL_CHILDREN, args, 0);
+}
+
 #ifdef __cplusplus
 }
 #endif

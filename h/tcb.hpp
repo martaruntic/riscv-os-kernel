@@ -73,6 +73,12 @@ public:
 
 	static void idleThread(void*);
 
+	void addChild(TCB* child){
+		child->nextSibling = this->firstChild;
+		this->firstChild = child;
+	}
+	void joinAllChildren();
+
 protected:
 	struct Context {
 		uint64 ra; // return address
@@ -112,6 +118,14 @@ private:
 	TCB* nextZombie;
 
 	unsigned semaphoreRequest;
+	// joinSem/joinWaitingCount su deo modifikacije "join obican" (feature/thread-join),
+	// ali su ovde potrebni jer ih joinAllChildren() koristi da ceka svako dete
+	KernelSemaphore* joinSem;
+	unsigned joinWaitingCount;
+	TCB* firstChild;
+	TCB* nextSibling;
+	TCB* parent;
+	unsigned childCnt;
 
 };
 

@@ -31,7 +31,9 @@ typedef enum {
     SEM_SIGNAL_N = 0x26,
     THREAD_SLEEP = 0x31,
     GETC = 0x41,
-    PUTC = 0x42
+    PUTC = 0x42,
+	THREAD_ADD_CHILD = 0x35,
+	THREAD_JOIN_ALL_CHILDREN = 0x36,
 } SyscallId;
 
 uint64 trigger_syscall(SyscallId id, uint64* args, uint8 argc);
@@ -52,6 +54,8 @@ int sem_signal_n(sem_t id, unsigned n);
 
 char getc();
 void putc(char);
+int thread_addChild (thread_t child);
+int thread_joinAll ();
 
 #ifdef __cplusplus
 }

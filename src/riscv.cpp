@@ -178,6 +178,22 @@ void Riscv::handleSystemCalls(Context* context) {
 			result = static_cast<uint64>(static_cast<uint8>(c));
 			break;
 		}
+		case THREAD_ADD_CHILD: {
+			TCB* child = reinterpret_cast<TCB*>(context->x[11]);
+			if (child && child != TCB::running) {
+				TCB::running->addChild(child);
+				child->parent = TCB::running;
+				result = 0;
+			} else {
+				result = -1;
+			}
+			break;
+		}
+		case THREAD_JOIN_ALL_CHILDREN: {
+			TCB::running->joinAllChildren();
+			result = 0;
+			break;
+		}
 		default: {
 			result = -1;
 			break; // wrong syscall id
