@@ -31,7 +31,8 @@ typedef enum {
     SEM_SIGNAL_N = 0x26,
     THREAD_SLEEP = 0x31,
     GETC = 0x41,
-    PUTC = 0x42
+    PUTC = 0x42,
+	THREAD_SET_MAX = 0x34,
 } SyscallId;
 
 uint64 trigger_syscall(SyscallId id, uint64* args, uint8 argc);
@@ -52,6 +53,7 @@ int sem_signal_n(sem_t id, unsigned n);
 
 char getc();
 void putc(char);
+int setMaxThreads(unsigned n);
 
 #ifdef __cplusplus
 }

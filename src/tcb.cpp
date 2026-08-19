@@ -11,6 +11,8 @@ TCB* TCB::running = nullptr;
 TCB* TCB::asleepList = nullptr;
 TCB* TCB::ghost = nullptr;
 TCB* TCB::zombieList = nullptr;
+unsigned TCB::maxThreads = 0;
+KernelSemaphore* TCB::MaxThreadSem = nullptr;
 
 extern KernelSemaphore* sem;
 void userMainWrapper(void*);
@@ -141,13 +143,14 @@ void TCB::threadWrapper() {
 
     void* par = running->arg;
 
-    if (running->getRunMode() == TCB::PrivilegeLevel::USER) {
-
+    bool isUserThread = running->getRunMode() == TCB::PrivilegeLevel::USER;
+    if(isUserThread){
+        if(MaxThreadSem) MaxThreadSem->wait();
         Riscv::popSppSpie();
-        // switch from kernel to user mode
     }
 
     (running->body)(par);
+    if(isUserThread && MaxThreadSem) MaxThreadSem->signal();
 
     running->setFinished();
 

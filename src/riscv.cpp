@@ -178,6 +178,12 @@ void Riscv::handleSystemCalls(Context* context) {
 			result = static_cast<uint64>(static_cast<uint8>(c));
 			break;
 		}
+		case THREAD_SET_MAX: {
+			unsigned n = static_cast<unsigned>(context->x[11]);
+			TCB::setMaxThreads(n);
+			result = 0;
+			break;
+		}
 		default: {
 			result = -1;
 			break; // wrong syscall id

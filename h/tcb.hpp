@@ -73,6 +73,14 @@ public:
 
 	static void idleThread(void*);
 
+	static unsigned maxThreads;
+	static KernelSemaphore* MaxThreadSem;
+	static void setMaxThreads(unsigned n) {
+		maxThreads = n;
+		if(MaxThreadSem != nullptr) MaxThreadSem->unblockAll();
+		MaxThreadSem = new KernelSemaphore(maxThreads);
+	 }
+
 protected:
 	struct Context {
 		uint64 ra; // return address

@@ -152,6 +152,12 @@ char getc() {
 	return (char)(uint8)trigger_syscall(GETC, 0, 0);
 }
 
+int setMaxThreads(unsigned n) {
+	uint64 args[1];
+	args[0] = (uint64)n;
+	return (int)(long)trigger_syscall(THREAD_SET_MAX, args, 1);
+}
+
 #ifdef __cplusplus
 }
 #endif
