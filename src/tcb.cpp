@@ -11,6 +11,7 @@ TCB* TCB::running = nullptr;
 TCB* TCB::asleepList = nullptr;
 TCB* TCB::ghost = nullptr;
 TCB* TCB::zombieList = nullptr;
+int TCB::threadId = 0;
 
 extern KernelSemaphore* sem;
 void userMainWrapper(void*);
@@ -50,7 +51,8 @@ TCB::TCB(Body body, uint64 sp, void* arg, PrivilegeLevel mode)
       relTimeAsleep(0),
       nextAsleep(nullptr),
       nextZombie(nullptr),
-      semaphoreRequest(0)
+      semaphoreRequest(0),
+      myId(0)
 {
     if (body && body != TCB::idleThread) {
         // if the TCB has a function to run, put it in the ready queue

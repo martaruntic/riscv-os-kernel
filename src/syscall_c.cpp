@@ -152,6 +152,11 @@ char getc() {
 	return (char)(uint8)trigger_syscall(GETC, 0, 0);
 }
 
+int getThreadId(){
+	uint64 args[1];
+	return (int)(long)trigger_syscall(THREAD_ID,args,0);
+}
+
 #ifdef __cplusplus
 }
 #endif

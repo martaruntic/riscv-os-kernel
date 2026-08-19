@@ -73,6 +73,10 @@ public:
 
 	static void idleThread(void*);
 
+	static int threadId;
+	int getThreadId(){ return myId;}
+	void setThreadId(){myId = threadId++;}
+
 protected:
 	struct Context {
 		uint64 ra; // return address
@@ -112,6 +116,7 @@ private:
 	TCB* nextZombie;
 
 	unsigned semaphoreRequest;
+	int myId;
 
 };
 

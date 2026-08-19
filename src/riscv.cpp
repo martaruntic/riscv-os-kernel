@@ -99,8 +99,10 @@ void Riscv::handleSystemCalls(Context* context) {
 			}
 			TCB* thread = TCB::createThread(startRoutine, threadSp, arg);
 			// if allocation fails signal the error!
-			if (thread)
+			if (thread) {
 				*handle = thread;
+				(*handle)->setThreadId();
+			}
 			else
 				result = -1; // cannot allocate thread or invalid handle
 
@@ -176,6 +178,10 @@ void Riscv::handleSystemCalls(Context* context) {
 			// PART FOR 20 POINTS
 			char c = __getc();
 			result = static_cast<uint64>(static_cast<uint8>(c));
+			break;
+		}
+		case THREAD_ID: {
+			result = TCB::running->getThreadId();
 			break;
 		}
 		default: {
