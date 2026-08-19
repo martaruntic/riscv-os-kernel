@@ -152,6 +152,12 @@ char getc() {
 	return (char)(uint8)trigger_syscall(GETC, 0, 0);
 }
 
+int thread_join(thread_t id) {
+	uint64 args[1];
+	args[0] = (uint64)id;
+	return (int)(long)trigger_syscall(THREAD_JOIN, args, 1);
+}
+
 #ifdef __cplusplus
 }
 #endif

@@ -178,6 +178,15 @@ void Riscv::handleSystemCalls(Context* context) {
 			result = static_cast<uint64>(static_cast<uint8>(c));
 			break;
 		}
+		case THREAD_JOIN: {
+			TCB* handle = reinterpret_cast<TCB*>(context->x[11]);
+			if (handle && !handle->isFinished()) {
+				handle->joinWaitingCount++;
+				handle->joinSem->wait();
+			}
+			result = 0;
+			break;
+		}
 		default: {
 			result = -1;
 			break; // wrong syscall id

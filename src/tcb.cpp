@@ -50,7 +50,9 @@ TCB::TCB(Body body, uint64 sp, void* arg, PrivilegeLevel mode)
       relTimeAsleep(0),
       nextAsleep(nullptr),
       nextZombie(nullptr),
-      semaphoreRequest(0)
+      semaphoreRequest(0),
+      joinSem(new KernelSemaphore(0)),
+      joinWaitingCount(0)
 {
     if (body && body != TCB::idleThread) {
         // if the TCB has a function to run, put it in the ready queue
@@ -150,6 +152,10 @@ void TCB::threadWrapper() {
     (running->body)(par);
 
     running->setFinished();
+
+    for (unsigned int i = 0; i < running->joinWaitingCount; i++) {
+        running->joinSem->signal();
+    }
 
     if (running->body == userMainWrapper) {
         sem->signal();

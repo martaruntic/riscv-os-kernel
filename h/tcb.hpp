@@ -112,6 +112,8 @@ private:
 	TCB* nextZombie;
 
 	unsigned semaphoreRequest;
+	KernelSemaphore* joinSem;
+	unsigned joinWaitingCount;
 
 };
 
