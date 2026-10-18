@@ -47,7 +47,3 @@ make qemu-gdb
 ```
 
 The kernel is launched on QEMU's `virt` machine with 128 MB of memory and one CPU core. Build and execution depend on the toolchain and the supporting libraries included in the repository.
-
-## Development notes
-
-This repository documents coursework and independent kernel extensions. It is intended as a learning project rather than a production operating system. The most useful parts of the work were implementing small kernel mechanisms, tracing incorrect behavior, and revising synchronization logic when initial solutions did not work as expected.
